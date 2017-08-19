@@ -1,0 +1,17 @@
+import "prelude.eg"
+
+using System
+using IO
+
+def fizzbuzz =
+    [ 100 -> print "100\n"
+    | N ? and ((N%3) == 0) ((N%5) == 0) -> 
+        let _ = print "fizz buzz, " in fizzbuzz (N+1)
+    //| N ? (N%3) == 0 -> 
+    //  let _ = print "fizz, " in fizzbuzz (N+1)
+    //| N ? (N%5) == 0 -> 
+    //    let _ = print "buzz, " in fizzbuzz (N+1)
+    | N -> 
+        let _ = print N ", " in fizzbuzz (N+1) ]
+
+def main = fizzbuzz 1
