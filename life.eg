@@ -1,0 +1,69 @@
+import "prelude.eg"
+
+using System
+using List
+using IO
+
+def boardsize = 5
+
+def empty = [ X, Y -> 0 ]
+
+def insert =
+    [ X, Y, BOARD -> 
+        [ X0, Y0 -> if and (X0 == X) (Y0 == Y) then 1
+                    else BOARD X0 Y0 ] ]
+
+def printcell =
+    [ 0 -> print ". "
+    | _ -> print "* " ]
+
+def printloop =
+    [ X, Y, BOARD ->
+        if X < boardsize then
+            let _ = printcell (BOARD X Y) in
+                printloop (X+1) Y BOARD
+        else if Y < (boardsize-1) then
+            let _ = print "\n" in
+                printloop 0 (Y+1) BOARD
+        else print "\n" ]
+
+def printboard = printloop 0 0
+
+def count =
+    [ BOARD, X, Y ->
+        (BOARD (X-1) (Y-1)) + (BOARD (X) (Y-1)) + (BOARD (X+1) (Y-1)) +
+        (BOARD (X-1) Y) + (BOARD (X+1) Y) +
+        (BOARD (X-1) (Y+1)) + (BOARD (X) (Y+1)) + (BOARD (X+1) (Y+1)) ]
+
+def next =
+    [ C, N ->
+        if C == 0 then if N == 3 then 1 else 0
+        else if or (N == 2) (N == 3) then 1
+        else 0 ]
+
+def updatecell =
+    [ X, Y, OLD, NEW ->
+        let N = next (OLD X Y) (count OLD X Y) in
+        [ 0 -> NEW | _ -> insert X Y NEW ] N ]
+
+def updateloop =
+    [ X, Y, OLD, NEW ->
+        if X < boardsize then
+            let NEW0 = updatecell X Y OLD NEW in
+                updateloop (X+1) Y OLD NEW0
+        else if Y < (boardsize-1) then
+            let NEW0 = updatecell X Y OLD NEW in
+                updateloop 0 (Y+1) OLD NEW0
+        else NEW ]
+
+def updateboard = [ BOARD -> updateloop 0 0 BOARD empty ]
+
+def blinker =
+    (insert 1 2) @ (insert 2 2) @ (insert 3 2)
+
+def main = 
+    let GEN0 = blinker empty in
+    let GEN1 = updateboard GEN0 in
+    let GEN2 = updateboard GEN1 in
+    let _ = map [ G -> let _ = print "generation:\n" in printboard G ] {GEN0, GEN1, GEN2} in
+        nop
