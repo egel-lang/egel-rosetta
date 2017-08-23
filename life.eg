@@ -36,22 +36,11 @@ def next =
     [ 0, N -> if N == 3 then 1 else 0
     | _, N -> if or (N == 2) (N == 3) then 1 else 0 ]
 
-def updatecell =
-    [ X, Y, OLD, NEW ->
-        let N = next (OLD X Y) (count OLD X Y) in
-        [ 0 -> NEW | _ -> insert X Y NEW ] N ]
-
-def updateloop =
-    [ X, Y, OLD, NEW ->
-        if X < boardsize then
-            let NEW0 = updatecell X Y OLD NEW in
-                updateloop (X+1) Y OLD NEW0
-        else if Y < (boardsize-1) then
-            let NEW0 = updatecell X Y OLD NEW in
-                updateloop 0 (Y+1) OLD NEW0
-        else NEW ]
-
-def updateboard = [ BOARD -> updateloop 0 0 BOARD empty ]
+def updateboard =
+    [ BOARD ->
+        let XX = map (\X Y -> X Y (BOARD X Y) (count BOARD X Y)) (flatten coords) in
+        let YY = map (\X Y C N -> X Y (next C N)) XX in
+            foldr [X Y 0, BOARD -> BOARD | X Y _, BOARD -> insert X Y BOARD ] empty YY ]
 
 def blinker =
     (insert 1 2) @ (insert 2 2) @ (insert 3 2)
