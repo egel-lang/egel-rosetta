@@ -1,0 +1,9 @@
+import "prelude.eg"
+
+using System
+using IO
+
+def main = 
+    let _ = par (par [_ -> print "enjoy\n"] 
+                    [_ -> print "rosetta\n"]) 
+                [_ -> print "code\n"] in nop
