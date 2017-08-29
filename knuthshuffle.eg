@@ -6,15 +6,12 @@ using IO
 using Math
 
 def swap =
-    [ I, J, XX ->
-        let I0 = nth I XX in
-        let J0 = nth J XX in
-            insert I J0 (insert J I0 XX) ]
+    [ I, J, XX -> insert I (nth J XX) (insert J (nth I XX) XX) ]
 
 def shuffle =
     [ XX ->
         let INDICES = reverse (fromto 0 ((length XX) -1)) in
         let SWAPS = map [ I -> I (between 0 I) ] INDICES in
-            foldr [I J, XX -> swap I J XX ] XX SWAPS ]
+            foldr [I J -> swap I J] XX SWAPS ]
 
 def main = shuffle (fromto 1 9)
