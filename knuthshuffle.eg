@@ -2,7 +2,6 @@ import "prelude.eg"
 
 using System
 using List
-using IO
 using Math
 
 def swap =
