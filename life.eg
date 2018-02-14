@@ -1,4 +1,5 @@
 import "prelude.eg"
+import "io.ego"
 
 using System
 using List
@@ -14,7 +15,7 @@ def insert =
                     else BOARD X0 Y0 ] ]
 
 def coords =
-    let R = fromto 0 (boardsize-1) in
+    let R = fromto 0 (boardsize - 1) in
         [ XX, YY -> map (\X -> map (\Y -> X Y) YY) XX ] R R
 
 def printcell =
@@ -28,9 +29,9 @@ def printboard =
 
 def count =
     [ BOARD, X, Y ->
-        (BOARD (X-1) (Y-1)) + (BOARD (X) (Y-1)) + (BOARD (X+1) (Y-1)) +
-        (BOARD (X-1) Y) + (BOARD (X+1) Y) +
-        (BOARD (X-1) (Y+1)) + (BOARD (X) (Y+1)) + (BOARD (X+1) (Y+1)) ]
+        (BOARD (X - 1) (Y - 1)) + (BOARD (X) (Y - 1)) + (BOARD (X+1) (Y - 1)) +
+        (BOARD (X - 1) Y) + (BOARD (X+1) Y) +
+        (BOARD (X - 1) (Y+1)) + (BOARD (X) (Y+1)) + (BOARD (X+1) (Y+1)) ]
 
 def next =
     [ 0, N -> if N == 3 then 1 else 0

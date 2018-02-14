@@ -1,4 +1,5 @@
 import "prelude.eg"
+import "io.ego"
 
 using System
 using IO
